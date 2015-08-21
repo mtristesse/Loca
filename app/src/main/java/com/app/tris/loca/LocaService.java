@@ -1,14 +1,12 @@
 package com.app.tris.loca;
 
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,12 +25,10 @@ import java.util.Map;
 
 public class LocaService extends Service implements Defines, Runnable,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener,   //for network and gps
-        com.google.android.gms.location.LocationListener    //for google api
+        GoogleApiClient.OnConnectionFailedListener
 {
 
-    Context context;
+    private Context context;
     public LocaService() {
 //        super();
     }
@@ -65,90 +61,10 @@ public class LocaService extends Service implements Defines, Runnable,
         //move from onCreate
         if (checkPlayServices()) {
             buildGoogleApiClient();
-            mGoogleApiClient.connect();
+            Loca.mGoogleApiClient.connect();
             createLocationRequest();
         }
     }
-
-
-    // Implement LocationListener
-    @Override
-    public void onLocationChanged(Location location) {
-
-        Loca.log("....... LocaService onLocationChanged()");
-
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        displayLocation();
-        Loca.location = mLastLocation;
-        //if (true) return;
-
-        if (Loca.ringtone == null) {
-            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-            Loca.ringtone = RingtoneManager.getRingtone(getApplicationContext(), notification);
-        }
-
-        Loca.location = location;
-        if (location != null) {
-//            Loca.log("onLocationChange(), location = " + location.getLatitude() + ", " + location.getLongitude());
-            Iterator<LocaAlarm> ite = Loca.listAlarms.iterator();
-            boolean isAlarmed = false;
-            String title = "";
-            double d = 0;
-
-            //to store results
-            Map<Double, LocaAlarm> results = new HashMap<Double, LocaAlarm>();
-
-            while (ite.hasNext()) {
-                LocaAlarm alarm = ite.next();
-                if (!alarm.alarmIsActive)
-                    continue;
-                d = Loca.getDistance(location.getLatitude(), location.getLongitude(), alarm.alarmLatitude, alarm.alarmLongitude);
-
-                if (d < Loca.currentRadius) {
-                    results.put(d, alarm);
-                    isAlarmed = true;
-                    title = alarm.alarmTitle;
-                }
-            }   //end while
-
-            if (isAlarmed) {
-                String status = "You are close to:";
-                for (LocaAlarm item : results.values()) {
-                    status += " " + item.alarmTitle;
-                }
-                Loca.status(status);
-
-                if (Loca.ringtone != null && !Loca.ringtone.isPlaying()) {
-                    Loca.ringtone.play();
-                }
-
-            } else {
-                Loca.toast("... ... ... ...");
-                Loca.status("There is no destination nearby");
-                if (Loca.ringtone.isPlaying())
-                    Loca.ringtone.stop();
-            }
-        }
-
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        Loca.log("onProviderDisabled()");
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        Loca.log("onProviderEnabled()");
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        Loca.log("onStatusChanged()");
-
-    }
-
 
 
     boolean isGPSEnabled = false;
@@ -170,13 +86,13 @@ public class LocaService extends Service implements Defines, Runnable,
         isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
         if (isNetworkEnabled && useNetwork) {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_UPDATE_TIME_MILLISECONDS, MIN_UPDATE_DISTANCE_METRES, this);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_UPDATE_TIME_MILLISECONDS, MIN_UPDATE_DISTANCE_METRES, Loca.listener);
             location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         }
 
         if (location == null && isGPSEnabled && useGPS) {
             Loca.log("GPS enabled");
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_UPDATE_TIME_MILLISECONDS, MIN_UPDATE_DISTANCE_METRES, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_UPDATE_TIME_MILLISECONDS, MIN_UPDATE_DISTANCE_METRES, Loca.listener);
             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
         return location;
@@ -185,11 +101,11 @@ public class LocaService extends Service implements Defines, Runnable,
     protected void startLocationUpdates() {
         //TODO: "this" should be a LocationListener
         Loca.log("...startLocationUpdates");
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        LocationServices.FusedLocationApi.requestLocationUpdates(Loca.mGoogleApiClient, mLocationRequest, Loca.listener);
     }
     protected void stopLocationUpdates() {
         Loca.log("...stopLocationUpdates");
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        LocationServices.FusedLocationApi.removeLocationUpdates(Loca.mGoogleApiClient, Loca.listener);
     }
 
     /**
@@ -233,36 +149,13 @@ public class LocaService extends Service implements Defines, Runnable,
      * Creating google api client object
      * */
     // Google client to interact with Google API
-    private GoogleApiClient mGoogleApiClient;
     protected synchronized void buildGoogleApiClient() {
         Loca.log("buildGoogleApiClient()");
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
+        Loca.mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API).build();
-        Loca.log("mGoogleApiClient = " + mGoogleApiClient);
-    }
-
-
-    /**
-     * Method to display the location on UI
-     * */
-    private Location mLastLocation;
-    public void displayLocation() {
-
-//        Loca.log("displayLocation()");
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (mLastLocation != null) {
-
-            double latitude = mLastLocation.getLatitude();
-            double longitude = mLastLocation.getLongitude();
-//            Loca.toast("From Google: " + latitude + ", " + longitude);
-//            Loca.log("From Google: " + latitude + ", " + longitude);
-
-        } else {
-            Loca.toast("(Couldn't get the location. Make sure location is enabled on the device)");
-            Loca.log("(Couldn't get the location. Make sure location is enabled on the device)");
-        }
+        Loca.log("mGoogleApiClient = " + Loca.mGoogleApiClient);
     }
 
 
@@ -277,16 +170,14 @@ public class LocaService extends Service implements Defines, Runnable,
 
     @Override
     public void onConnected(Bundle arg0) {
-
         // Once connected with google api, get the location
         Loca.log(("onConnected"));
         startLocationUpdates();
-        displayLocation();
     }
 
     @Override
     public void onConnectionSuspended(int arg0) {
         Loca.log(("onConnectionSuspended"));
-        mGoogleApiClient.connect();
+        Loca.mGoogleApiClient.connect();
     }
 }

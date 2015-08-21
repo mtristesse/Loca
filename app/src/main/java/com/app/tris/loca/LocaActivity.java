@@ -65,6 +65,8 @@ public class LocaActivity extends ActionBarActivity implements Defines {
                 Loca.toast(getString(R.string.about));
                 return true;
             case R.id.action_quit:
+                if (Loca.intentLocaService != null)
+                    stopService(Loca.intentLocaService);
                 finish();
                 System.exit(0);
                 return true;

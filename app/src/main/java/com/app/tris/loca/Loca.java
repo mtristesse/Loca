@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.FileInputStream;
@@ -23,18 +24,23 @@ import java.util.ArrayList;
 public class Loca implements Defines {
 
     public static Location location;                //a reference to the current location
+
     public static TextView textViewStatus = null;   //a reference to the status text
     public static Ringtone ringtone = null;
 
     public static Context context = null;
     public static void init(Context c) {
         context = c;
+        listener = new LocaListener(context);
     }
 
     public static Intent intentLocaService = null;      //a reference to the service
     public static AlarmListAdapter itemsAdapter = null; //a reference to the adapter
     public static ArrayList<LocaAlarm> listAlarms = new ArrayList<>();
 
+
+    public static GoogleApiClient mGoogleApiClient;
+    public static LocaListener listener = null;
 
     public static void log(String s) {
         Log.i(TAG, s);

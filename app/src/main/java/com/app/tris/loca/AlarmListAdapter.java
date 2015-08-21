@@ -73,5 +73,9 @@ public class AlarmListAdapter extends ArrayAdapter<LocaAlarm> implements Defines
     public void notifyDataSetChanged () {
         super.notifyDataSetChanged();
         Loca.save();
+
+        //TODO: call service LocationListener's onLocationChanged
+        Loca.listener.onLocationChanged(Loca.location);
+
     }
 }
