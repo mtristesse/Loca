@@ -1,0 +1,116 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".LocaMainActivity$PlaceholderFragment"
+    android:background="@color/loca_app_background">
+
+    <RelativeLayout
+        android:id="@+id/layoutTitleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/loca_title_bar"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/layoutTitle"
+
+            android:background="@color/loca_title_bar"
+            android:layout_centerInParent="true"
+            android:layout_alignParentTop="true">
+
+            <TextView android:text="     "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView1" />
+
+            <TextView android:text="Loca Alarm"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/loca_text_white"
+                android:textSize="24dp"
+                android:textStyle="bold" />
+
+
+            <TextView android:text="     "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView2" />
+        </LinearLayout>
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="≡"
+            android:id="@+id/buttonSettings"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:textSize="24dp" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:id="@+id/buttonAdd"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textSize="24dp" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/layoutTitleBar"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/TaskLinearLayout"
+        android:weightSum="1"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="25dp"
+        android:paddingTop="5dp">
+
+
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/listView"
+            android:scrollbars="none"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="7dp"
+            android:drawSelectorOnTop="false" />
+
+
+
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="20dp"
+        android:id="@+id/textViewStatus"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/loca_app_background"
+        android:autoText="false"
+        android:elegantTextHeight="true"
+        android:gravity="center"
+        android:textColor="@color/loca_text" />
+
+</RelativeLayout>

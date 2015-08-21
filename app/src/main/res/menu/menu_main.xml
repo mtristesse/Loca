@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".LocaActivity">
+    <item android:id="@+id/action_settings" android:title="@string/action_settings"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_about" android:title="@string/action_about"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_quit" android:title="@string/action_quit"
+        android:orderInCategory="100" app:showAsAction="never" />
+
+    <item android:id="@+id/action_debug_add" android:title="Debug add"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_debug_reset" android:title="Debug reset to test values"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_service" android:title="Start service"
+        android:orderInCategory="100" app:showAsAction="never" />
+
+
+</menu>

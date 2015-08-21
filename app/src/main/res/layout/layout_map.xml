@@ -1,0 +1,89 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".LocaMainActivity$PlaceholderFragment"
+    android:background="@color/loca_app_background">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layoutTitle"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/loca_title_bar">
+
+        <TextView android:text="     "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView1" />
+
+        <TextView android:text="Loca Alarm"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/loca_text_white"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+
+
+        <TextView android:text="     "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2" />
+    </LinearLayout>
+
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent" android:id="@+id/map"
+        tools:context="com.app.tris.loca.MapActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_below="@+id/layoutTitle"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="20dp"
+        android:id="@+id/textStatus"
+        android:background="@color/loca_app_background"
+        android:autoText="false"
+        android:elegantTextHeight="true"
+        android:gravity="center"
+        android:textColor="@color/loca_text"
+
+        android:layout_above="@+id/linearLayoutBottom"
+        android:text="@string/map_instruction" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutBottom"
+        android:gravity="bottom"
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_alignParentBottom="true"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@color/loca_app_background">
+        <Button
+            android:id="@+id/buttonBack"
+            android:text="Back"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="1" />
+        <Button
+            android:id="@+id/buttonUpdate"
+            android:text="Update"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+</RelativeLayout>
+
+

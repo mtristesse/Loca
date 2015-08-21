@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="loca_app_background">#e5e5e5</color>
+    <color name="loca_item_background">#ffffff</color>
+    <color name="loca_item_border">#888888</color>
+
+    <color name="loca_title_bar">#009a49</color>
+
+    <color name="loca_text">#000000</color>
+    <color name="loca_text_white">#ffffff</color>
+
+</resources>
