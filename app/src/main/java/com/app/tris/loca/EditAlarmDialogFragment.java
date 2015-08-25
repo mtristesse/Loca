@@ -29,7 +29,7 @@ public class EditAlarmDialogFragment extends DialogFragment implements Defines {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View dialogView = inflater.inflate(R.layout.dialogfragment, container, false);
+        View dialogView = inflater.inflate(R.layout.editalarmdialogfragment, container, false);
 
         final EditText editTextName = (EditText) dialogView.findViewById(R.id.editTextName);
         editTextLocation = (EditText) dialogView.findViewById(R.id.editTextLocation);
@@ -41,8 +41,7 @@ public class EditAlarmDialogFragment extends DialogFragment implements Defines {
             this.getDialog().setTitle(R.string.edit_alarm);
             editTextName.setText(item.alarmTitle);
             latlng = new LatLng(item.alarmLatitude, item.alarmLongitude);
-            editTextLocation.setText(format.format(latlng.latitude) + ", " + format.format(latlng.longitude));
-
+            editTextLocation.setText(Loca.formatLoc(latlng));
         }
 
 

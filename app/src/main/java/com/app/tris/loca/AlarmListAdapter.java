@@ -38,16 +38,19 @@ public class AlarmListAdapter extends ArrayAdapter<LocaAlarm> implements Defines
         CheckBox checkBoxIsActive = (CheckBox) rowView.findViewById(R.id.checkBoxIsActive);
         if (checkBoxIsActive != null)
             checkBoxIsActive.setChecked(item.alarmIsActive);
+
+        checkBoxIsActive.setTag(item);
         checkBoxIsActive.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Loca.log("item at " + position + " is " + (isChecked ? "checked." : "unchecked."));
-
-                LocaAlarm item = getItem(position);
-                int index = Loca.listAlarms.indexOf(item);
-                item.alarmIsActive = isChecked;
-                Loca.listAlarms.set(index, item);
-                Loca.itemsAdapter.notifyDataSetChanged();
+                LocaAlarm item = (LocaAlarm) buttonView.getTag();
+                Loca.log("item = " + item);
+                if (item != null) {
+                    int index = Loca.listAlarms.indexOf(item);
+                    item.alarmIsActive = isChecked;
+                    Loca.listAlarms.set(index, item);
+                    Loca.itemsAdapter.notifyDataSetChanged();
+                }
             }
         });
 

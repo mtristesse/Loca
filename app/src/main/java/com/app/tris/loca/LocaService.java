@@ -58,6 +58,7 @@ public class LocaService extends Service implements Defines, Runnable,
     @Override
     public void run()
     {
+        Loca.status("acquiring GPS...");
         //move from onCreate
         if (checkPlayServices()) {
             buildGoogleApiClient();
@@ -74,6 +75,8 @@ public class LocaService extends Service implements Defines, Runnable,
 
     //only call once
     public Location getLocation() {
+        Loca.status("get location...");
+
         Loca.log("getLocation()");
 
         Location location = null;

@@ -57,11 +57,23 @@ public class Loca implements Defines {
     }
 
 
-    public static String formatLoc(double lat, double lng) {
-        return format.format(lat) + ", " + format.format(lng);
+    public static String doubleToDegree(double l) {
+        double v = Math.abs(l);
+        int degrees = (int) v;
+        v = v % 1 * 60;
+        int minutes = (int) v;
+        v = v % 1 * 60;
+        int seconds = (int) v;
+        return "" + degrees + "°" + minutes + "′" + seconds + "″";
     }
+    public static String formatLoc(double lat, double lng) {
+//        return format.format(lat) + ", " + format.format(lng);
+        return "" + doubleToDegree(lat) + (lat > 0 ? "N" : "S") + " "
+                + doubleToDegree(lng) + (lng > 0 ? "E" : "W");
+    }
+
     public static String formatLoc(LatLng latlng) {
-        return format.format(latlng.latitude) + ", " + format.format(latlng.longitude);
+        return formatLoc(latlng.latitude, latlng.longitude);
     }
 
 

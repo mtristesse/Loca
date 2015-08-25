@@ -75,7 +75,6 @@ public class LocaListener implements Defines,
                 }
 
             } else {
-                Loca.toast("... ... ... ...");
                 Loca.status("There is no destination nearby");
                 if (Loca.ringtone.isPlaying())
                     Loca.ringtone.stop();

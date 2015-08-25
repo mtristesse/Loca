@@ -82,5 +82,7 @@ public class SettingsDialogFragment extends DialogFragment implements Defines {
     public void onDismiss(DialogInterface dialog) {
         Loca.log("onDismiss....");
         Loca.saveSettings();
+
     }
+
 }
