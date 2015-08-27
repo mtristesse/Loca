@@ -20,9 +20,11 @@ public class LocaActivity extends ActionBarActivity implements Defines {
                     .add(R.id.container, fragment)
                     .commit();
         }
+        Settings.load();
 
         if (Loca.intentLocaService == null) {
             Loca.log("start service...");
+            Loca.status("Start service");
             Loca.intentLocaService = new Intent(this, LocaService.class);
             Loca.intentLocaService.putExtra(ALARMLIST, Loca.listAlarms);
             startService(Loca.intentLocaService);
@@ -45,7 +47,10 @@ public class LocaActivity extends ActionBarActivity implements Defines {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        if (Settings.IsDebugMode)
+            getMenuInflater().inflate(R.menu.menu_main_debug, menu);
+        else
+            getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -78,6 +83,7 @@ public class LocaActivity extends ActionBarActivity implements Defines {
             case R.id.action_debug_reset:
                 Loca.log("Debug reset");
                 Loca.reset();
+                Settings.reset();
                 return true;
 
             case R.id.action_service:

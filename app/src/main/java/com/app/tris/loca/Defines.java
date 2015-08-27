@@ -15,16 +15,11 @@ public interface Defines {
     public static final String ITEM = "item";
     public static final String ALARMLIST = "ListAlarms";
 
-    //flag to turn on/off Network / GPS
-    public static final boolean useNetwork = true;
-    public static final boolean useGPS = true;
 
     //constants for calculation
     public static final int EARTH_RADIUS =  63781370;
-    public static final int LOCATION_RADIUS_METRES = 100;
     public static final int MIN_UPDATE_TIME_MILLISECONDS = 1000;
     public static final int MIN_UPDATE_DISTANCE_METRES = 10;
-
     public static final int UPDATE_INTERVAL = 10000; // 10 sec
     public static final int FATEST_INTERVAL = 1000; // 1 sec
     public static final int DISPLACEMENT = 10; // 10 meters

@@ -30,24 +30,24 @@ public class SettingsDialogFragment extends DialogFragment implements Defines {
         radiusArray = getResources().getIntArray(R.array.alarm_radius_array);
         Loca.log("radiusArray.length = " + radiusArray.length);
 
-        Loca.loadSettings();
+        Settings.load();
 
         int maxProgress = radiusArray.length - 1;
-        if (Loca.currentRadius > radiusArray[maxProgress]) {
+        if (Settings.currentRadius > radiusArray[maxProgress]) {
             seekBarAlarmRadius.setProgress(maxProgress);
-            Loca.currentRadius = radiusArray[maxProgress];
+            Settings.currentRadius = radiusArray[maxProgress];
         }
         else {
             for (int i = 0; i < radiusArray.length; i++) {
-                if (radiusArray[i] >= Loca.currentRadius) {
+                if (radiusArray[i] >= Settings.currentRadius) {
                     seekBarAlarmRadius.setProgress(i);
-                    Loca.currentRadius = radiusArray[i];
+                    Settings.currentRadius = radiusArray[i];
                     break;
                 }
             }
         }
 
-        textViewAlarmRadius.setText(getString(R.string.alarm_radius) + " " + Loca.currentRadius + " m");
+        textViewAlarmRadius.setText(getString(R.string.alarm_radius) + " " + Settings.currentRadius + " m");
 
         seekBarAlarmRadius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -73,15 +73,15 @@ public class SettingsDialogFragment extends DialogFragment implements Defines {
     void updateProgress(int progress) {
         Loca.log("updateProgress: " + progress);
         if (progress < radiusArray.length) {
-            Loca.currentRadius = radiusArray[progress];
-            textViewAlarmRadius.setText(getString(R.string.alarm_radius) + " " + Loca.currentRadius + " m");
+            Settings.currentRadius = radiusArray[progress];
+            textViewAlarmRadius.setText(getString(R.string.alarm_radius) + " " + Settings.currentRadius + " m");
         }
     }
 
     @Override
     public void onDismiss(DialogInterface dialog) {
         Loca.log("onDismiss....");
-        Loca.saveSettings();
+        Settings.save();
 
     }
 

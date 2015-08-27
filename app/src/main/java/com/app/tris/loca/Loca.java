@@ -1,9 +1,14 @@
 package com.app.tris.loca;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.media.Ringtone;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,6 +61,33 @@ public class Loca implements Defines {
             textViewStatus.setText(s);
     }
 
+    public static void notify(String s) {
+        if (context != null) {
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+            NotificationCompat.Builder mBuilder =
+            new NotificationCompat.Builder(context)
+                    .setSmallIcon(R.drawable.icon)
+                    .setContentTitle("My notification")
+                    .setContentText(s);
+
+            Intent resultIntent = new Intent(context, LocaActivity.class);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+// Adds the back stack for the Intent (but not the Intent itself)
+            stackBuilder.addParentStack(LocaActivity.class);
+// Adds the Intent that starts the Activity to the top of the stack
+            stackBuilder.addNextIntent(resultIntent);
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            0,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            mBuilder.setContentIntent(resultPendingIntent);
+
+            int mNotificationId = 001;
+            notificationManager.notify(mNotificationId, mBuilder.build());
+        }
+    }
 
     public static String doubleToDegree(double l) {
         double v = Math.abs(l);
@@ -118,32 +150,6 @@ public class Loca implements Defines {
         }
     }
 
-    public static void saveSettings() {
-        try {
-            FileOutputStream fos = context.openFileOutput(saveSettingsFileName, Context.MODE_PRIVATE);    //no file dir is needed when writing?
-            ObjectOutputStream out = new ObjectOutputStream(fos);
-            out.writeInt(Loca.currentRadius);
-            out.writeInt(5);    //dummy to test
-            out.close();
-        } catch (Exception e) {
-        }
-    }
-
-    public static void loadSettings() {
-        //test reading from file
-        log("Loading...");
-        FileInputStream fis = null;
-        ObjectInputStream in = null;
-        try {
-            fis = new FileInputStream(context.getFilesDir() + "/" + saveSettingsFileName);
-            in = new ObjectInputStream(fis);
-            Loca.currentRadius = in.readInt();
-            in.close();
-            log("Load successfully");
-        } catch (Exception e) {
-            log("Read exception: " + e.toString());
-        }
-    }
 
 
     public static double getDistance(double lat1, double long1, double lat2, double long2){  // generally used geo measurement function
@@ -165,8 +171,4 @@ public class Loca implements Defines {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         return EARTH_RADIUS * c;
     }
-
-
-//    public static Marker marker;
-    public static int currentRadius = 1000;
 }

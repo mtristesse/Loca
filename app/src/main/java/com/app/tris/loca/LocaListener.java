@@ -30,7 +30,8 @@ public class LocaListener implements Defines,
     @Override
     public void onLocationChanged(Location location) {
         Loca.log("....... LocaListener onLocationChanged()");
-
+        if (Loca.mGoogleApiClient == null) return;
+        
         Loca.location = LocationServices.FusedLocationApi.getLastLocation(Loca.mGoogleApiClient);
 
         //TODO: create a separate class for ringtone
@@ -56,7 +57,7 @@ public class LocaListener implements Defines,
                     continue;
                 d = Loca.getDistance(location.getLatitude(), location.getLongitude(), alarm.alarmLatitude, alarm.alarmLongitude);
 
-                if (d < Loca.currentRadius) {
+                if (d < Settings.currentRadius) {
                     results.put(d, alarm);
                     isAlarmed = true;
                     title = alarm.alarmTitle;
@@ -69,7 +70,7 @@ public class LocaListener implements Defines,
                     status += " " + item.alarmTitle;
                 }
                 Loca.status(status);
-
+                Loca.notify(status);
                 if (Loca.ringtone != null && !Loca.ringtone.isPlaying()) {
                     Loca.ringtone.play();
                 }

@@ -60,6 +60,8 @@ public class LocaService extends Service implements Defines, Runnable,
     {
         Loca.status("acquiring GPS...");
         //move from onCreate
+        if (true)
+            return;
         if (checkPlayServices()) {
             buildGoogleApiClient();
             Loca.mGoogleApiClient.connect();
@@ -88,12 +90,12 @@ public class LocaService extends Service implements Defines, Runnable,
         isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-        if (isNetworkEnabled && useNetwork) {
+        if (isNetworkEnabled && Settings.useNetwork) {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_UPDATE_TIME_MILLISECONDS, MIN_UPDATE_DISTANCE_METRES, Loca.listener);
             location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         }
 
-        if (location == null && isGPSEnabled && useGPS) {
+        if (location == null && isGPSEnabled && Settings.useGPS) {
             Loca.log("GPS enabled");
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_UPDATE_TIME_MILLISECONDS, MIN_UPDATE_DISTANCE_METRES, Loca.listener);
             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
